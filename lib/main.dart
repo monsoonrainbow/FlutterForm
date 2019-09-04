@@ -37,6 +37,104 @@ class _FlutterForm extends State<StatefullForm> {
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
               child: textInputWidget("BOL #", "Optional"),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "Service Mode",
+                      style: TextStyle(
+                          fontSize: 15.0, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "Transit Service",
+                      style: TextStyle(
+                          fontSize: 15.0, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                new formDropDowns("LTL"),
+                new formDropDowns("Select One..")
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 20),
+              margin: EdgeInsets.only(right: 250),
+              child: Text(
+                "Pickup Services",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            new formCheckBoxes("Construction Site",true),
+            new formCheckBoxes("Courier Services",false),
+            new formCheckBoxes("Drayage Service",false),
+            new formCheckBoxes("Dropped Trailer",false),
+            new formCheckBoxes("Inside Service",false),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "Date Pickup Requested",
+                      style: TextStyle(
+                          fontSize: 15.0, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "Date Pickup Actual",
+                      style: TextStyle(
+                          fontSize: 15.0, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                new formDropDowns("Select Date..."),
+                new formDropDowns("Select Date...")
+              ],
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top : 20),
+                  child: MaterialButton(
+                      disabledColor: Colors.white,
+                      child: Text("Back",style:TextStyle(color: Colors.blue))
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top : 20),
+                  child: MaterialButton(
+                      disabledColor: Colors.black,
+                      child: Text("Next",style:TextStyle(color: Colors.white))
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),
@@ -45,12 +143,14 @@ class _FlutterForm extends State<StatefullForm> {
 
   Container notification1() {
     return Container(
-      padding: EdgeInsets.fromLTRB(80, 5, 0, 30),
+      padding: EdgeInsets.fromLTRB(85, 5, 0, 30),
       child: Row(
         children: <Widget>[
           Text(
             "*",
-            style: TextStyle(color: Colors.red),
+            style: TextStyle(
+              color: Colors.red,
+            ),
           ),
           Text(
             "Indicates Required Field",
@@ -116,11 +216,11 @@ class _FlutterForm extends State<StatefullForm> {
         onPressed: () {},
         icon: Icon(Icons.menu),
       ),
+      centerTitle: true,
       title: Container(
         child: Image.asset(
           "assets/images/delivery.png",
         ),
-        margin: EdgeInsets.fromLTRB(60, 0, 0, 0),
       ),
       actions: <Widget>[
         CircleAvatar(
@@ -135,8 +235,66 @@ class _FlutterForm extends State<StatefullForm> {
   }
 }
 
-class textInputWidget extends StatelessWidget {
+class formCheckBoxes extends StatelessWidget {
+  final option;
+  final selected;
+  const formCheckBoxes(this.option,this.selected) : super();
 
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(15,2, 0, 0),
+        child: Column(children: <Widget>[
+           Row(
+              children: <Widget>[
+                Checkbox(
+                  value: selected,
+                  checkColor: Colors.white,
+                  activeColor: Colors.green,
+                  onChanged: (bool value) {},
+                ),
+                Text(option,
+                    style: TextStyle(color: Colors.black)),
+              ],
+            ),
+        ]));
+  }
+}
+
+class formDropDowns extends StatelessWidget {
+  final buttonName;
+
+  const formDropDowns(this.buttonName) : super();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(Radius.circular(4)),
+          color: Colors.grey,
+        ),
+        width: 160.0,
+        height: 40.0,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              isExpanded: true,
+              hint: Text(buttonName, style: TextStyle(color: Colors.black)),
+              items: <String>['Courier 1', 'Courier 2'].map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+              onChanged: (_) {},
+            ),
+          ),
+        ));
+  }
+}
+
+class textInputWidget extends StatelessWidget {
   final labelName;
 
   final hintText;
@@ -147,9 +305,29 @@ class textInputWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Container(
-            width: 90,
-            margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
+        Expanded(
+          flex: 20,
+          child: Container(
+              margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
+              decoration: new BoxDecoration(
+                shape: BoxShape.rectangle,
+                border: new Border.all(
+                  color: Colors.grey,
+                  width: 1.0,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 14, 0, 13),
+                child: Text(
+                  labelName,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              )),
+        ),
+        Expanded(
+          flex: 40,
+          child: Container(
+            margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
             decoration: new BoxDecoration(
               shape: BoxShape.rectangle,
               border: new Border.all(
@@ -158,25 +336,13 @@ class textInputWidget extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(6, 14, 0, 13),
-              child: Text(
-                labelName, style: TextStyle(fontWeight: FontWeight.bold),),
-            )
-        ),
-        Container(
-          width: 200,
-          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-          decoration: new BoxDecoration(
-            shape: BoxShape.rectangle,
-            border: new Border.all(
-              color: Colors.grey,
-              width: 1.0,
-            ),
-          ),
-          child: new TextFormField(
-            decoration: new InputDecoration(
-                hintText: hintText,
-                border: InputBorder.none,
+              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: new TextFormField(
+                decoration: new InputDecoration(
+                  hintText: hintText,
+                  border: InputBorder.none,
+                ),
+              ),
             ),
           ),
         ),
