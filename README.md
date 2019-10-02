@@ -1,6 +1,7 @@
 # flutter_form
 
 A Flutter form layout for item shipping
+Making over the list form to get data information from firebase.
 
 ## Getting Started
 
